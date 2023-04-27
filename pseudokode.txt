@@ -1,0 +1,45 @@
+IMPORT Flask, render_template, request, redirect, url_for fra flask
+IMPORT pymongo
+
+SET client TO pymongo.MongoClient("mongodb+srv://danbar:Geforce420@cluster0.jbkzgrx.mongodb.net/?retryWrites=true&w=majority")
+SET db TO client["dan"]
+SET collection TO db["dancollect"]
+
+SET app TO Flask(__name__, static_url_path="/static")
+
+DEFINE FUNCTION login()
+    SET error TO None
+    IF request.method == 'POST' THEN
+        # Hent brukernavn og passord fra skjemaet
+        SET username TO request.form.get("username")
+        SET password TO request.form.get("passord")
+
+        # Sjekk om brukernavn og passord er korrekt
+        IF username == '1234' and password == '1234' THEN
+            RETURN redirect(url_for('main'))
+        ELSE
+            SET error TO 'Feil brukernavn eller passord'
+        END IF
+    END IF
+    RETURN render_template('login.html', error=error)
+END FUNCTION
+
+DEFINE FUNCTION main()
+    RETURN render_template('main.html')
+END FUNCTION
+
+DEFINE FUNCTION booking()
+    RETURN render_template('booking.html')
+END FUNCTION
+
+DEFINE FUNCTION bugs()
+    RETURN render_template("bugs.html")
+END FUNCTION
+
+DEFINE FUNCTION thmemes()
+    RETURN render_template("addons.html")
+END FUNCTION
+
+IF __name__ == '__main__' THEN
+    app.run()
+END IF
